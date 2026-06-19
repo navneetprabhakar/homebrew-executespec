@@ -16,6 +16,8 @@ class ExecutespecCli < Formula
 
     core_pack = npm_pack_workspace("@executespec/core")
     cd "cli" do
+      inreplace "package.json", /"@executespec\/core":\s*"[^"]+"/,
+                %Q{"@executespec/core": "file:#{core_pack}"}
       system "npm", "install", "--omit=dev", *std_npm_args
     end
 
