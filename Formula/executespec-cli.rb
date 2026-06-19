@@ -40,7 +40,7 @@ class ExecutespecCli < Formula
   private
 
   def npm_pack_workspace(workspace)
-    output = shell_output("npm pack -w #{workspace} --ignore-scripts --pack-destination #{buildpath}")
+    output = Utils.safe_popen_read("npm", "pack", "-w", workspace, "--ignore-scripts", "--pack-destination", buildpath.to_s)
     buildpath/output.lines.fetch(-1).chomp
   end
 end
