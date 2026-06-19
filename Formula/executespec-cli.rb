@@ -16,8 +16,8 @@ class ExecutespecCli < Formula
 
     core_pack = npm_pack_workspace("@executespec/core")
     cd "cli" do
-      inreplace "package.json", /"@executespec\/core":\s*"[^"]+"/,
-                %Q{"@executespec/core": "file:#{core_pack}"}
+      inreplace "package.json", %r{"@executespec/core":\s*"[^"]+"},
+                %Q("@executespec/core": "file:#{core_pack}")
       system "npm", "install", "--omit=dev", *std_npm_args
     end
 
@@ -42,7 +42,9 @@ class ExecutespecCli < Formula
   private
 
   def npm_pack_workspace(workspace)
-    output = Utils.safe_popen_read("npm", "pack", "-w", workspace, "--ignore-scripts", "--pack-destination", buildpath.to_s)
+    output = Utils.safe_popen_read(
+      "npm", "pack", "-w", workspace, "--ignore-scripts", "--pack-destination", buildpath.to_s
+    )
     buildpath/output.lines.fetch(-1).chomp
   end
 end
